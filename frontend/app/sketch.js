@@ -1,47 +1,72 @@
-class Game { }
+class Game {
+}
+
 Game.lineIdCnt = 0;
 Game.lines = [];
 Game.fields = [];
 
-class Paper { }
+class Paper {
+}
 
 Paper.show = function () {
-    for (let x = Defaults.size/2; x < Defaults.width; x+=Defaults.size) {
-        let line = new Line(undefined, createVector(x, 0), createVector(x, Defaults.heigth), Defaults.paperLineColor, Defaults.paperWeight);
-        line.show();
+
+    // Defaults.width+Defaults.size because of that number of parallel lines needed
+    // for drawing n linked fields is n+1
+    for (let x = Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
+        //let id = 0;
+        let line;
+        for (let i = 0; i < Defaults.heigth / Defaults.size + 1; i++) {
+            //id++;
+            line = new Line(undefined, createVector(x - Defaults.size, i * Defaults.size),
+                createVector(x - Defaults.size, (i + 1) * Defaults.size),
+                Defaults.paperLineColor, Defaults.paperWeight);
+            line.show();
+        }
     }
-    for (let y = Defaults.size/2; y < Defaults.heigth; y+=Defaults.size) {
-        let line = new Line(undefined, createVector(0, y), createVector(Defaults.width, y), Defaults.paperLineColor, Defaults.paperWeight);
-        line.show();
+
+    for (let y = Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
+        //let id = 0;
+        let line;
+        for (let i = 0; i < Defaults.width / Defaults.size + 1; i++) {
+            //id++;
+            line = new Line(undefined, createVector(i * Defaults.size, y - Defaults.size),
+                createVector((i + 1) * Defaults.size, y - Defaults.size),
+                Defaults.paperLineColor, Defaults.paperWeight);
+            line.show();
+        }
     }
 };
 
-class Defaults { }
-Defaults.width = 770;
-Defaults.heigth = 770;
+class Defaults {
+}
+
+Defaults.width = 800;
+Defaults.heigth = 800;
+Defaults.edgeOffset = 20;
+Defaults.size = 70; //fixed
+Defaults.boardSize = 5;
 Defaults.weight = 10;
-Defaults.size = 70;
+Defaults.color = 30;
 Defaults.background = 230;
 Defaults.paperWeight = 5;
 
 function setup() {
     createCanvas(Defaults.width, Defaults.heigth);
     Defaults.paperLineColor = color(0, 0, 0, 60);
-    Defaults.color = Defaults.paperLineColor;
     background(Defaults.background);
     f1 = new Field(0, createVector(350, 350));
-    f2 = new Field(0, createVector(350+70, 350));
-    f3 = new Field(0, createVector(350-70, 350));
-    f4 = new Field(0, createVector(350, 350+70));
-    f5 = new Field(0, createVector(350, 350-70));
-    f2 = new Field(0, createVector(350+140, 350));
-    f3 = new Field(0, createVector(350-140, 350));
-    f4 = new Field(0, createVector(350, 350+140));
-    f5 = new Field(0, createVector(350, 350-140));
-    f5 = new Field(0, createVector(350-70, 350-70));
-    f5 = new Field(0, createVector(350-70, 350+70));
-    f5 = new Field(0, createVector(350+70, 350-70));
-    f5 = new Field(0, createVector(350+70, 350+70));
+    f2 = new Field(0, createVector(350 + 70, 350));
+    f3 = new Field(0, createVector(350 - 70, 350));
+    f4 = new Field(0, createVector(350, 350 + 70));
+    f5 = new Field(0, createVector(350, 350 - 70));
+    f2 = new Field(0, createVector(350 + 140, 350));
+    f3 = new Field(0, createVector(350 - 140, 350));
+    f4 = new Field(0, createVector(350, 350 + 140));
+    f5 = new Field(0, createVector(350, 350 - 140));
+    f5 = new Field(0, createVector(350 - 70, 350 - 70));
+    f5 = new Field(0, createVector(350 - 70, 350 + 70));
+    f5 = new Field(0, createVector(350 + 70, 350 - 70));
+    f5 = new Field(0, createVector(350 + 70, 350 + 70));
     Game.fields.push(f1);
     Game.fields.push(f2);
     Game.fields.push(f3);
@@ -53,9 +78,12 @@ function draw() {
     background(Defaults.background);
     Paper.show();
 
-    Game.lines.forEach(function (line) {
+
+    /*Game.lines.forEach(function (line) {
         line.show();
-    });
+    });*/
+
+
 }
 
 function mousePressed() {
@@ -67,12 +95,13 @@ function mousePressed() {
 }
 
 class Line {
-    constructor(id, start, end, lineColor, weight) {
+    constructor(id, start, end, lineColor, weight, playable) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.color = lineColor || Defaults.color;
         this.weight = weight || Defaults.weight;
+        this.playable = playable;
     }
 
     show() {
@@ -97,12 +126,14 @@ class Line {
         );
         let checkXvertical = mouseX > this.start.x - this.weight && mouseX < this.start.x + this.weight;
         let isHorizontal = this.start.y === this.end.y;
-        let isVertical =   this.start.x === this.end.x;
+        let isVertical = this.start.x === this.end.x;
         return (
             (isHorizontal && checkXhorizontal && checkYhorizontal) ||
-            (isVertical   && checkXvertical   && checkYvertical)
+            (isVertical && checkXvertical && checkYvertical)
         )
     }
+
+
 }
 
 class Field {
@@ -113,19 +144,19 @@ class Field {
         this.edges = [];
         let corners = [
             p5.Vector.add(position, createVector(-1, -1).mult(this.size / 2)),
-            p5.Vector.add(position, createVector(-1,  1).mult(this.size / 2)),
-            p5.Vector.add(position, createVector( 1,  1).mult(this.size / 2)),
-            p5.Vector.add(position, createVector( 1, -1).mult(this.size / 2))
+            p5.Vector.add(position, createVector(-1, 1).mult(this.size / 2)),
+            p5.Vector.add(position, createVector(1, 1).mult(this.size / 2)),
+            p5.Vector.add(position, createVector(1, -1).mult(this.size / 2))
         ];
         for (let i = 0; i < 3; i++) {
-            let edge = new Line(Game.lineIdCnt, corners[i], corners[i+1]);
-            Game.lineIdCnt++;
-            Game.lines.push(edge);
+            let edge = new Line(Game.lineIdCnt, corners[i], corners[i + 1]);
+            //Game.lineIdCnt++;
+            //Game.lines.push(edge);
             this.edges.push(edge);
         }
         let edge = new Line(Game.lineIdCnt, corners[3], corners[0]);
-        Game.lineIdCnt++;
-        Game.lines.push(edge);
+        //Game.lineIdCnt++;
+        //Game.lines.push(edge);
         this.edges.push(edge);
     }
 }

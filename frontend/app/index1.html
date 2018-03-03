@@ -5,10 +5,17 @@
     <title>Title</title>
 </head>
 
+<style>
+    #start {
+        height: 100px;
+        width: 100px;
+    }
+</style>
+
 <body>
 
-<button onclick="send()">START</button>
-<div>kad se klikne na START treba da se posalje post request na /start, body zahteva treba da sadrzi informacije o igri</div>
+<button id="start" onclick="send()">START</button>
+<!--kad se klikne na START treba da se posalje post request na /start, body zahteva treba da sadrzi informacije o igri-->
 
 <script>
     let markers = [1, 2, 3];

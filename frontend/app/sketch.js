@@ -2,9 +2,33 @@ class Game { }
 Game.lineIdCnt = 0;
 Game.lines = [];
 Game.fields = [];
+
+class Paper { }
+
+Paper.show = function () {
+    for (let x = Defaults.size/2; x < Defaults.width; x+=Defaults.size) {
+        let line = new Line(undefined, createVector(x, 0), createVector(x, Defaults.heigth), Defaults.paperLineColor, Defaults.paperWeight);
+        line.show();
+    }
+    for (let y = Defaults.size/2; y < Defaults.heigth; y+=Defaults.size) {
+        let line = new Line(undefined, createVector(0, y), createVector(Defaults.width, y), Defaults.paperLineColor, Defaults.paperWeight);
+        line.show();
+    }
+};
+
+class Defaults { }
+Defaults.width = 770;
+Defaults.heigth = 770;
+Defaults.weight = 10;
+Defaults.size = 70;
+Defaults.background = 230;
+Defaults.paperWeight = 5;
+
 function setup() {
-    createCanvas(700, 700);
-    background(12);
+    createCanvas(Defaults.width, Defaults.heigth);
+    Defaults.paperLineColor = color(0, 0, 0, 60);
+    Defaults.color = Defaults.paperLineColor;
+    background(Defaults.background);
     f1 = new Field(0, createVector(350, 350));
     f2 = new Field(0, createVector(350+70, 350));
     f3 = new Field(0, createVector(350-70, 350));
@@ -26,9 +50,12 @@ function setup() {
 }
 
 function draw() {
+    background(Defaults.background);
+    Paper.show();
+
     Game.lines.forEach(function (line) {
         line.show();
-    })
+    });
 }
 
 function mousePressed() {
@@ -44,8 +71,8 @@ class Line {
         this.id = id;
         this.start = start;
         this.end = end;
-        this.color = lineColor || 153;
-        this.weight = weight || 10;
+        this.color = lineColor || Defaults.color;
+        this.weight = weight || Defaults.weight;
     }
 
     show() {
@@ -82,7 +109,7 @@ class Field {
     constructor(id, position, size) {
         this.id = id;
         this.position = position;
-        this.size = size || 70;
+        this.size = size || Defaults.size;
         this.edges = [];
         let corners = [
             p5.Vector.add(position, createVector(-1, -1).mult(this.size / 2)),

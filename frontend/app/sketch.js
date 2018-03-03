@@ -1,32 +1,38 @@
-
-var d = 70;
-var p1 = d;
-var p2 = p1+d;
-var p3 = p2+d;
-var p4 = p3+d;
-var lines = [];
-
+class Game { }
+Game.lineIdCnt = 0;
+Game.lines = [];
+Game.fields = [];
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(700, 700);
     background(12);
-    l1 = new Line(0, createVector(p3, p3), createVector(p2, p3));
-    l2 = new Line(1, createVector(p2, p3), createVector(p2, p2));
-    l3 = new Line(2, createVector(p2, p2), createVector(p3, p2));
-    l4 = new Line(3, createVector(p3, p2), createVector(p3, p3));
-    lines.push(l1);
-    lines.push(l2);
-    lines.push(l3);
-    lines.push(l4);
+    f1 = new Field(0, createVector(350, 350));
+    f2 = new Field(0, createVector(350+70, 350));
+    f3 = new Field(0, createVector(350-70, 350));
+    f4 = new Field(0, createVector(350, 350+70));
+    f5 = new Field(0, createVector(350, 350-70));
+    f2 = new Field(0, createVector(350+140, 350));
+    f3 = new Field(0, createVector(350-140, 350));
+    f4 = new Field(0, createVector(350, 350+140));
+    f5 = new Field(0, createVector(350, 350-140));
+    f5 = new Field(0, createVector(350-70, 350-70));
+    f5 = new Field(0, createVector(350-70, 350+70));
+    f5 = new Field(0, createVector(350+70, 350-70));
+    f5 = new Field(0, createVector(350+70, 350+70));
+    Game.fields.push(f1);
+    Game.fields.push(f2);
+    Game.fields.push(f3);
+    Game.fields.push(f4);
+    Game.fields.push(f5);
 }
 
 function draw() {
-    lines.forEach(function (line) {
+    Game.lines.forEach(function (line) {
         line.show();
     })
 }
 
 function mousePressed() {
-    lines.forEach(function (line) {
+    Game.lines.forEach(function (line) {
         if (line.intersects(mouseX, mouseY)) {
             line.color = color(255, 0, 0);
         }
@@ -53,21 +59,46 @@ class Line {
         // Here we can use this.end.y also, because we have rectangular shapes
         // Because of that x OR y of start and end will be the same
         // Who doesn't understand please do some math
-        var checkYhorizontal = mouseY > this.start.y - 5 && mouseY < this.start.y + 5;
-        var checkXhorizontal = (
+        let checkYhorizontal = mouseY > this.start.y - this.weight && mouseY < this.start.y + this.weight;
+        let checkXhorizontal = (
             mouseX > min(this.start.x, this.end.x) &&
             mouseX < max(this.start.x, this.end.x)
         );
-        var checkYvertical = (
+        let checkYvertical = (
             mouseY > min(this.start.y, this.end.y) &&
             mouseY < max(this.start.y, this.end.y)
         );
-        var checkXvertical = mouseX > this.start.x - 5 && mouseX < this.start.x + 5;
-        var isHorizontal = this.start.y === this.end.y;
-        var isVertical =   this.start.x === this.end.x;
+        let checkXvertical = mouseX > this.start.x - this.weight && mouseX < this.start.x + this.weight;
+        let isHorizontal = this.start.y === this.end.y;
+        let isVertical =   this.start.x === this.end.x;
         return (
             (isHorizontal && checkXhorizontal && checkYhorizontal) ||
             (isVertical   && checkXvertical   && checkYvertical)
         )
+    }
+}
+
+class Field {
+    constructor(id, position, size) {
+        this.id = id;
+        this.position = position;
+        this.size = size || 70;
+        this.edges = [];
+        let corners = [
+            p5.Vector.add(position, createVector(-1, -1).mult(this.size / 2)),
+            p5.Vector.add(position, createVector(-1,  1).mult(this.size / 2)),
+            p5.Vector.add(position, createVector( 1,  1).mult(this.size / 2)),
+            p5.Vector.add(position, createVector( 1, -1).mult(this.size / 2))
+        ];
+        for (let i = 0; i < 3; i++) {
+            let edge = new Line(Game.lineIdCnt, corners[i], corners[i+1]);
+            Game.lineIdCnt++;
+            Game.lines.push(edge);
+            this.edges.push(edge);
+        }
+        let edge = new Line(Game.lineIdCnt, corners[3], corners[0]);
+        Game.lineIdCnt++;
+        Game.lines.push(edge);
+        this.edges.push(edge);
     }
 }

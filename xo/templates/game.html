@@ -7,6 +7,7 @@
         margin: 0;
     } </style>
     <script src="{{ url_for('static', filename='vendor/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.sound.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/defaults.js') }}"></script>
@@ -15,7 +16,9 @@
     <script src="{{ url_for('static', filename='js/line.js') }}"></script>
     <script src="{{ url_for('static', filename='js/field.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/socket.io-2.0.4.js')  }}"></script>
 </head>
 <body>
+    <script src="{{ url_for('static', filename='js/connect.js') }}"></script>
 </body>
 </html>

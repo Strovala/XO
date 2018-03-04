@@ -20,12 +20,17 @@ def start():
 def connect_handler():
     emit('connect',
          {'message': '{0} has joined'},
-         broadcast=True)
+         broadcast=True
+    )
 
 
 @socketio.on('play')
 def handle_my_custom_event(data):
     print('received json: ' + str(data))
+    emit('play_response',
+         {'id': data.get('id')},
+         broadcast=True
+    )
 
 
 if __name__ == '__main__':

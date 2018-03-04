@@ -55,11 +55,16 @@ function mousePressed() {
         if (!stop) {
             if (!line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
                 Socket.socket.emit('play', {
-                  'fields': 3
+                  id: line.getHashKey()[0]
                 });
-                line.click(color(0, 0, 0));
                 stop = true;
             }
         }
     })
 }
+
+Socket.socket.on('play_response', function (data) {
+    let line = Game.paper.lines[data.id];
+    console.log(data);
+    line.click(color(255, 0, 0));
+})

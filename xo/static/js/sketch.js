@@ -9,28 +9,31 @@ class Paper {
 }
 
 Paper.show = function () {
-
+    let offsetX = (Defaults.width%Defaults.size)/2;
+    let offsetY = (Defaults.heigth%Defaults.size)/2;
     // Defaults.width+Defaults.size because of that number of parallel lines needed
     // for drawing n linked fields is n+1
-    for (let x = Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
+    for (let x = offsetX - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
         //let id = 0;
         let line;
-        for (let i = 0; i < Defaults.heigth / Defaults.size + 1; i++) {
+        for (let y = offsetX - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
             //id++;
-            line = new Line(undefined, createVector(x - Defaults.size, i * Defaults.size),
-                createVector(x - Defaults.size, (i + 1) * Defaults.size),
+            line = new Line(undefined,
+                createVector(x, y),
+                createVector(x, y + Defaults.size),
                 Defaults.paperLineColor, Defaults.paperWeight);
             line.show();
         }
     }
 
-    for (let y = Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
+    for (let y = offsetY - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
         //let id = 0;
         let line;
-        for (let i = 0; i < Defaults.width / Defaults.size + 1; i++) {
+        for (let x = offsetY - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
             //id++;
-            line = new Line(undefined, createVector(i * Defaults.size, y - Defaults.size),
-                createVector((i + 1) * Defaults.size, y - Defaults.size),
+            line = new Line(undefined,
+                createVector(x,                 y),
+                createVector(x + Defaults.size, y),
                 Defaults.paperLineColor, Defaults.paperWeight);
             line.show();
         }
@@ -40,8 +43,8 @@ Paper.show = function () {
 class Defaults {
 }
 
-Defaults.width = 800;
-Defaults.heigth = 800;
+Defaults.width = 650;
+Defaults.heigth = 650;
 Defaults.edgeOffset = 20;
 Defaults.size = 70; //fixed
 Defaults.boardSize = 5;

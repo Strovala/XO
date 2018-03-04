@@ -54,6 +54,9 @@ function mousePressed() {
     Game.paper.lines.forEach(function (line) {
         if (!stop) {
             if (!line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
+                Socket.socket.emit('play', {
+                  'fields': 3
+                });
                 line.click(color(0, 0, 0));
                 stop = true;
             }

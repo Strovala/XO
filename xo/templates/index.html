@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <script src="../static/vendor/jquery-3.3.1.min.js"></script>
-    <script src="../static/vendor/p5.min.js"></script>
-    <script src="../static/vendor/addons/p5.dom.min.js"></script>
-    <script src="../static/vendor/addons/p5.sound.min.js"></script>
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <style> body {
+        padding: 0;
+        margin: 0;
+    } </style>
+    <script src="{{ url_for('static', filename='vendor/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/p5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/addons/p5.dom.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/addons/p5.sound.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/socket.io-2.0.4.js') }}"></script>
-    
-    <title>Title</title>
-</head>
-
-<body>
-    <button onclick="send()">START</button>
+    <script src="{{ url_for('static', filename='js/defaults.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/paper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/line.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/field.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect.js') }}"></script>
+</head>
+<body>
 </body>
 </html>

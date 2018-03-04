@@ -54,10 +54,17 @@ Game.setBoard = function () {
             field.setPlayable();
         });
         if (i === boardHalfCnt) {
+            let fillColor = color(255, 0, 0);
+            i = 0;
             fields.forEach(function (field) {
+                if (i >= 2) {
+                    fillColor = color(0, 0, 255);
+                }
                 field.edges.forEach(function (edge) {
-                    edge.click(color(0, 0, 0));
+                    edge.border = true;
+                    edge.click(fillColor);
                 });
+                i++;
             });
         }
     }
@@ -67,7 +74,9 @@ Game.setBoard = function () {
             let field = Game.fields.get(indexX - l, indexY - i);
             field.setPlayable();
             if (l === boardHalfCnt - i) {
+                field.edges.w.border = true;
                 field.edges.w.click(color(0, 0, 0));
+                field.edges.n.border = true;
                 field.edges.n.click(color(0, 0, 0));
             }
         }
@@ -75,7 +84,9 @@ Game.setBoard = function () {
             let field = Game.fields.get(indexX + l, indexY - i);
             field.setPlayable();
             if (l === boardHalfCnt - i) {
+                field.edges.e.border = true;
                 field.edges.e.click(color(0, 0, 0));
+                field.edges.n.border = true;
                 field.edges.n.click(color(0, 0, 0));
             }
         }
@@ -86,7 +97,9 @@ Game.setBoard = function () {
             let field = Game.fields.get(indexX - l, indexY + i);
             field.setPlayable();
             if (l === boardHalfCnt - i) {
+                field.edges.w.border = true;
                 field.edges.w.click(color(0, 0, 0));
+                field.edges.s.border = true;
                 field.edges.s.click(color(0, 0, 0));
             }
         }
@@ -94,7 +107,9 @@ Game.setBoard = function () {
             let field = Game.fields.get(indexX + l, indexY + i);
             field.setPlayable();
             if (l === boardHalfCnt - i) {
+                field.edges.e.border = true;
                 field.edges.e.click(color(0, 0, 0));
+                field.edges.s.border = true;
                 field.edges.s.click(color(0, 0, 0));
             }
         }

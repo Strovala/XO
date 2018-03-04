@@ -63,24 +63,25 @@ class Field {
         }
         if (this.filled) {
             let startLine = this.edges.w;
+            noStroke();
             fill(this.color);
             rect(
                 startLine.start.x + startLine.weight/2,
                 startLine.start.y + startLine.weight/2,
-                this.size - startLine.weight/2,
-                this.size - startLine.weight/2
+                this.size - startLine.weight,
+                this.size - startLine.weight
             );
         }
     }
 
-    checkFilled() {
+    checkFilled(color) {
         let clickedCnt = 0;
         this.edges.forEach(function (edge) {
             if (edge.clicked)
                 clickedCnt++;
         });
         if (clickedCnt === 4) {
-            this.color = color(0, 0, 0);
+            this.color = color;
             this.filled = true;
         }
     }

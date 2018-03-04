@@ -8,13 +8,26 @@ class Line {
         this.playable = false;
         this.clicked = false;
         this.fields = [];
+        this.border = false;
     }
 
     show() {
         stroke(this.color);
+        if (this.playable && this.clicked) {
+            stroke(0, 0, 0);
+        }
         strokeWeight(this.weight);
 
         line(this.start.x, this.start.y, this.end.x, this.end.y);
+
+        if (this.clicked && !this.border) {
+            stroke(this.color);
+            strokeWeight(2);
+
+            line(this.start.x, this.start.y, this.end.x, this.end.y);
+        }
+
+
     }
 
     intersects(mouseX, mouseY) {
@@ -30,7 +43,7 @@ class Line {
         let checkXvertical = mouseX > this.start.x - Defaults.clickOffset && mouseX < this.start.x + Defaults.clickOffset;
         let checkYvertical = (
             mouseY > min(this.start.y, this.end.y) + Defaults.lineOffset &&
-            mouseY < max(this.start.y, this.end.y) -Defaults.lineOffset
+            mouseY < max(this.start.y, this.end.y) - Defaults.lineOffset
         );
 
         let isHorizontal = this.start.y === this.end.y;
@@ -48,12 +61,12 @@ class Line {
         ]
     }
 
-    click(color) {
+    click(fillColor) {
         this.clicked = true;
-        this.color = color;
+        this.color = fillColor;
         this.weight = Defaults.weight;
         this.fields.forEach(function (field) {
-            field.checkFilled();
+            field.checkFilled(fillColor);
         });
     }
 

@@ -6,52 +6,63 @@ Game.lines = [];
 Game.fields = [];
 
 class Paper {
+    constructor() {
+        this.lines = [];
+        this.initialize();
+    }
+
+    initialize() {
+        let offsetX = (Defaults.width%Defaults.size)/2;
+        let offsetY = (Defaults.heigth%Defaults.size)/2
+        ;
+        // Defaults.width+Defaults.size because of that number of parallel lines needed
+        // for drawing n linked fields is n+1
+        for (let x = offsetX - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
+            //let id = 0;
+            let line;
+            for (let y = offsetX - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
+                //id++;
+                line = new Line(undefined,
+                    createVector(x, y),
+                    createVector(x, y + Defaults.size),
+                    Defaults.paperLineColor, Defaults.paperWeight);
+                this.lines.push(line);
+            }
+        }
+
+        for (let y = offsetY - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
+            //let id = 0;
+            let line;
+            for (let x = offsetY - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
+                //id++;
+                line = new Line(undefined,
+                    createVector(x,                 y),
+                    createVector(x + Defaults.size, y),
+                    Defaults.paperLineColor, Defaults.paperWeight);
+                this.lines.push(line);
+            }
+        }
+    }
+
+    show() {
+        this.lines.forEach(function (line) {
+            line.show();
+        })
+    }
 }
-
-Paper.show = function () {
-    let offsetX = (Defaults.width%Defaults.size)/2;
-    let offsetY = (Defaults.heigth%Defaults.size)/2;
-    // Defaults.width+Defaults.size because of that number of parallel lines needed
-    // for drawing n linked fields is n+1
-    for (let x = offsetX - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
-        //let id = 0;
-        let line;
-        for (let y = offsetX - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
-            //id++;
-            line = new Line(undefined,
-                createVector(x, y),
-                createVector(x, y + Defaults.size),
-                Defaults.paperLineColor, Defaults.paperWeight);
-            line.show();
-        }
-    }
-
-    for (let y = offsetY - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
-        //let id = 0;
-        let line;
-        for (let x = offsetY - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
-            //id++;
-            line = new Line(undefined,
-                createVector(x,                 y),
-                createVector(x + Defaults.size, y),
-                Defaults.paperLineColor, Defaults.paperWeight);
-            line.show();
-        }
-    }
-};
 
 class Defaults {
 }
 
 Defaults.width = 650;
 Defaults.heigth = 650;
-Defaults.edgeOffset = 20;
 Defaults.size = 70; //fixed
 Defaults.boardSize = 5;
 Defaults.weight = 10;
 Defaults.color = 30;
 Defaults.background = 230;
 Defaults.paperWeight = 5;
+Defaults.clickOffset = 20;
 
 function setup() {
     createCanvas(Defaults.width, Defaults.heigth);
@@ -75,11 +86,13 @@ function setup() {
     Game.fields.push(f3);
     Game.fields.push(f4);
     Game.fields.push(f5);
+
+    Game.paper = new Paper();
 }
 
 function draw() {
     background(Defaults.background);
-    Paper.show();
+    Game.paper.show();
 
 
     /*Game.lines.forEach(function (line) {
@@ -90,9 +103,14 @@ function draw() {
 }
 
 function mousePressed() {
-    Game.lines.forEach(function (line) {
-        if (line.intersects(mouseX, mouseY)) {
-            line.color = color(255, 0, 0);
+    let stop = false;
+    Game.paper.lines.forEach(function (line) {
+        if (!stop) {
+            if (line.intersects(mouseX, mouseY)) {
+                line.color = color(255, 0, 0);
+                line.clicked = true;
+                stop = true;
+            }
         }
     })
 }
@@ -105,6 +123,7 @@ class Line {
         this.color = lineColor || Defaults.color;
         this.weight = weight || Defaults.weight;
         this.playable = playable;
+        this.clciked = false;
     }
 
     show() {
@@ -118,7 +137,7 @@ class Line {
         // Here we can use this.end.y also, because we have rectangular shapes
         // Because of that x OR y of start and end will be the same
         // Who doesn't understand please do some math
-        let checkYhorizontal = mouseY > this.start.y - this.weight && mouseY < this.start.y + this.weight;
+        let checkYhorizontal = mouseY > this.start.y - Defaults.clickOffset && mouseY < this.start.y + Defaults.clickOffset;
         let checkXhorizontal = (
             mouseX > min(this.start.x, this.end.x) &&
             mouseX < max(this.start.x, this.end.x)
@@ -127,7 +146,7 @@ class Line {
             mouseY > min(this.start.y, this.end.y) &&
             mouseY < max(this.start.y, this.end.y)
         );
-        let checkXvertical = mouseX > this.start.x - this.weight && mouseX < this.start.x + this.weight;
+        let checkXvertical = mouseX > this.start.x - Defaults.clickOffset && mouseX < this.start.x + Defaults.clickOffset;
         let isHorizontal = this.start.y === this.end.y;
         let isVertical = this.start.x === this.end.x;
         return (

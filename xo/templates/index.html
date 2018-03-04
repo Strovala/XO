@@ -1,13 +1,47 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style> body {padding: 0; margin: 0;} </style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="{{ url_for('static', filename='vendor/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.sound.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
-  </head>
-  <body>
-  </body>
+    <title>Title</title>
+</head>
+
+<body>
+
+<button onclick="send()">START</button>
+<div>kad se klikne na START treba da se posalje post request na /start, body zahteva treba da sadrzi informacije o igri</div>
+
+<script>
+    function send() {
+      post('/start', {name: 'Johnny Bravo'});
+    }
+    function post(path, params, method) {
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+</body>
 </html>

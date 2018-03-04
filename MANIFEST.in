@@ -1,2 +1,2 @@
-graft XO/templates
-graft XO/static
+graft xo/templates
+graft xo/static

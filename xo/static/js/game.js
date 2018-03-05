@@ -54,11 +54,11 @@ Game.setBoard = function () {
             field.setPlayable();
         });
         if (i === boardHalfCnt) {
-            let fillColor = color(255, 0, 0);
+            let fillColor = Game.horizontal;
             i = 0;
             fields.forEach(function (field) {
                 if (i >= 2) {
-                    fillColor = color(0, 0, 255);
+                    fillColor = Game.vertical;
                 }
                 field.edges.forEach(function (edge) {
                     edge.border = true;

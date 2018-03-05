@@ -31,33 +31,34 @@ function setup() {
     createCanvas(Defaults.width, Defaults.heigth);
     Defaults.paperLineColor = color(150, 150, 150);
     background(Defaults.background);
+    Game.myColor = color(0, 0, 0);
     Game.paper = new Paper();
-    Game.generateFields();
-    Game.setBoard();
+    // Game.generateFields();
+    // Game.setBoard();
     // testInit();
 }
 
 function draw() {
-    background(Defaults.background);
-    Game.paper.show();
+    if (Game.connected) {
+        background(Defaults.background);
+        Game.paper.show();
 
 
-    Game.fields.forEach(function (field) {
-        field.show();
-    });
-
-
+        Game.fields.forEach(function (field) {
+            field.show();
+        });
+    }
 }
 
 function mousePressed() {
     let stop = false;
     Game.paper.lines.forEach(function (line) {
         if (!stop) {
-            if (!line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
-                // Socket.socket.emit('play', {
-                //   id: line.getHashKey()[0]
-                // });
-                line.click(color(255, 255, 0));
+            if (Game.turn && !line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
+                Socket.socket.emit('play', {
+                  id: line.getHashKey()[0]
+                });
+                // line.click(color(255, 255, 0));
                 stop = true;
             }
         }
@@ -65,7 +66,18 @@ function mousePressed() {
 }
 
 Socket.socket.on('play_response', function (data) {
-    let line = Game.paper.lines[data.id];
     console.log(data);
-    line.click(color(255, 0, 0));
+    Game.turn = data.turn;
+    let line = Game.paper.lines[data.id];
+    let fillColor = color(
+        data.color.r,
+        data.color.g,
+        data.color.b,
+        data.color.a
+    );
+    line.click(fillColor);
+});
+
+Socket.socket.on('play_again_response', function (data) {
+   Game.turn = data.turn;
 });

@@ -14,8 +14,8 @@ class Paper {
         };
         this.offsetX = (Defaults.width%Defaults.size)/2;
         this.offsetY = (Defaults.heigth%Defaults.size)/2;
-        this.fieldsCntX = (Defaults.width / Defaults.size) | 0;
-        this.fieldsCntY = (Defaults.heigth / Defaults.size) | 0;
+        this.fieldsCntX = int(Defaults.width / Defaults.size);
+        this.fieldsCntY = int(Defaults.heigth / Defaults.size);
         this.initialize();
     }
 
@@ -27,7 +27,7 @@ class Paper {
         for (let x = offsetX - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
             //let id = 0;
             let line;
-            for (let y = offsetX - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
+            for (let y = offsetY - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
                 //id++;
                 line = new Line(undefined,
                     createVector(x, y),
@@ -40,7 +40,7 @@ class Paper {
         for (let y = offsetY - Defaults.size; y < Defaults.heigth + Defaults.size; y += Defaults.size) {
             //let id = 0;
             let line;
-            for (let x = offsetY - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
+            for (let x = offsetX - Defaults.size; x < Defaults.width + Defaults.size; x += Defaults.size) {
                 //id++;
                 line = new Line(undefined,
                     createVector(x,                 y),

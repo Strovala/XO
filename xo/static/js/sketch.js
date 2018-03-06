@@ -27,28 +27,49 @@ function testInit() {
     Game.fields.push(f13);
 }
 
+function centerCanvas() {
+    let x = (windowWidth - width) / 2;
+    let y = (windowHeight - height) / 2;
+    Game.canvas.position(x, y);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
 function setup() {
-    createCanvas(Defaults.width, Defaults.heigth);
-    Defaults.paperLineColor = color(150, 150, 150);
-    background(Defaults.background);
-    Defaults.size = (min(
+    Defaults.width = windowWidth;
+    Defaults.heigth = windowHeight;
+    Defaults.size = int(min(
         min(Defaults.width, Defaults.heigth) / Defaults.boardSize,
         Defaults.fixedSize
-    )) | 0;
-    if (!((min(Defaults.width, Defaults.heigth) / Defaults.size) % 2)) {
+    ));
+    let fieldCntMin = int(min(Defaults.width, Defaults.heigth) / Defaults.size);
+    if (!(fieldCntMin % 2)) {
         Defaults.size *= 0.9;
+    }
+    let fieldCntMax = int(max(Defaults.width, Defaults.heigth) / Defaults.size);
+    if (!(fieldCntMax % 2)) {
+        if (Defaults.width > Defaults.heigth) {
+            Defaults.width -= Defaults.size;
+        }
+        if (Defaults.heigth > Defaults.width) {
+            Defaults.heigth -= Defaults.size;
+        }
     }
     Defaults.clickOffset = Defaults.size * 0.2;
     Defaults.lineOffset = Defaults.size * 0.2;
-    Defaults.paperWeight = (Defaults.size / 14) | 0;
+    Defaults.paperWeight = int(Defaults.size / 14);
     Defaults.weight = Defaults.paperWeight * 2;
-    Defaults.middleLineWeight = (Defaults.weight * 0.2) | 0;
+    Defaults.middleLineWeight = int(Defaults.weight * 0.2);
     if (Defaults.middleLineWeight === 0) {
         Defaults.middleLineWeight = 1;
     }
+    Game.canvas = createCanvas(Defaults.width, Defaults.heigth);
+    // centerCanvas();
+    Defaults.paperLineColor = color(150, 150, 150);
+    background(Defaults.background);
     Game.paper = new Paper();
-    console.log(Game.paper);
-    console.log(Defaults)
 }
 
 function draw() {

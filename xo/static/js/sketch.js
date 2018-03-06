@@ -31,11 +31,24 @@ function setup() {
     createCanvas(Defaults.width, Defaults.heigth);
     Defaults.paperLineColor = color(150, 150, 150);
     background(Defaults.background);
-    Game.myColor = color(0, 0, 0);
+    Defaults.size = (min(
+        min(Defaults.width, Defaults.heigth) / Defaults.boardSize,
+        Defaults.fixedSize
+    )) | 0;
+    if (!((min(Defaults.width, Defaults.heigth) / Defaults.size) % 2)) {
+        Defaults.size *= 0.9;
+    }
+    Defaults.clickOffset = Defaults.size * 0.2;
+    Defaults.lineOffset = Defaults.size * 0.2;
+    Defaults.paperWeight = (Defaults.size / 14) | 0;
+    Defaults.weight = Defaults.paperWeight * 2;
+    Defaults.middleLineWeight = (Defaults.weight * 0.2) | 0;
+    if (Defaults.middleLineWeight === 0) {
+        Defaults.middleLineWeight = 1;
+    }
     Game.paper = new Paper();
-    // Game.generateFields();
-    // Game.setBoard();
-    // testInit();
+    console.log(Game.paper);
+    console.log(Defaults)
 }
 
 function draw() {

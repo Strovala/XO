@@ -22,7 +22,7 @@ class Line {
 
         if (this.clicked && !this.border) {
             stroke(this.color);
-            strokeWeight(2);
+            strokeWeight(Defaults.middleLineWeight);
 
             line(this.start.x, this.start.y, this.end.x, this.end.y);
         }

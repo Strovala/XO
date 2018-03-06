@@ -55,16 +55,16 @@ Game.setBoard = function () {
         });
         if (i === boardHalfCnt) {
             let fillColor = Game.horizontal;
-            i = 0;
+            let j = 0;
             fields.forEach(function (field) {
-                if (i >= 2) {
+                if (j >= 2) {
                     fillColor = Game.vertical;
                 }
                 field.edges.forEach(function (edge) {
                     edge.border = true;
                     edge.click(fillColor);
                 });
-                i++;
+                j++;
             });
         }
     }

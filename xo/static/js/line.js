@@ -22,7 +22,7 @@ class Line {
 
         if (this.clicked && !this.border) {
             stroke(this.color);
-            strokeWeight(2);
+            strokeWeight(Defaults.middleLineWeight);
 
             line(this.start.x, this.start.y, this.end.x, this.end.y);
         }
@@ -67,6 +67,13 @@ class Line {
         this.weight = Defaults.weight;
         this.fields.forEach(function (field) {
             field.checkFilled(fillColor);
+            let isMyColor = false;
+            // fillColor === Game.myColor will never be equal
+            // because its comparing references
+            isMyColor = fillColor.toString() === Game.myColor.toString();
+            if (field.filled && isMyColor) {
+                Socket.socket.emit('play_again');
+            }
         });
     }
 

@@ -27,37 +27,72 @@ function testInit() {
     Game.fields.push(f13);
 }
 
+function centerCanvas() {
+    let x = (windowWidth - width) / 2;
+    let y = (windowHeight - height) / 2;
+    Game.canvas.position(x, y);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
 function setup() {
-    createCanvas(Defaults.width, Defaults.heigth);
+    Defaults.width = windowWidth;
+    Defaults.heigth = windowHeight;
+    Defaults.size = int(min(
+        min(Defaults.width, Defaults.heigth) / Defaults.boardSize,
+        Defaults.fixedSize
+    ));
+    let fieldCntMin = int(min(Defaults.width, Defaults.heigth) / Defaults.size);
+    if (!(fieldCntMin % 2)) {
+        Defaults.size *= 0.9;
+    }
+    let fieldCntMax = int(max(Defaults.width, Defaults.heigth) / Defaults.size);
+    if (!(fieldCntMax % 2)) {
+        if (Defaults.width > Defaults.heigth) {
+            Defaults.width -= Defaults.size;
+        }
+        if (Defaults.heigth > Defaults.width) {
+            Defaults.heigth -= Defaults.size;
+        }
+    }
+    Defaults.clickOffset = Defaults.size * 0.2;
+    Defaults.lineOffset = Defaults.size * 0.2;
+    Defaults.paperWeight = int(Defaults.size / 14);
+    Defaults.weight = Defaults.paperWeight * 2;
+    Defaults.middleLineWeight = int(Defaults.weight * 0.2);
+    if (Defaults.middleLineWeight === 0) {
+        Defaults.middleLineWeight = 1;
+    }
+    Game.canvas = createCanvas(Defaults.width, Defaults.heigth);
+    // centerCanvas();
     Defaults.paperLineColor = color(150, 150, 150);
     background(Defaults.background);
     Game.paper = new Paper();
-    Game.generateFields();
-    Game.setBoard();
-    // testInit();
 }
 
 function draw() {
-    background(Defaults.background);
-    Game.paper.show();
+    if (Game.connected) {
+        background(Defaults.background);
+        Game.paper.show();
 
 
-    Game.fields.forEach(function (field) {
-        field.show();
-    });
-
-
+        Game.fields.forEach(function (field) {
+            field.show();
+        });
+    }
 }
 
 function mousePressed() {
     let stop = false;
     Game.paper.lines.forEach(function (line) {
         if (!stop) {
-            if (!line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
-                // Socket.socket.emit('play', {
-                //   id: line.getHashKey()[0]
-                // });
-                line.click(color(255, 255, 0));
+            if (Game.turn && !line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
+                Socket.socket.emit('play', {
+                  id: line.getHashKey()[0]
+                });
+                // line.click(color(255, 255, 0));
                 stop = true;
             }
         }
@@ -65,7 +100,18 @@ function mousePressed() {
 }
 
 Socket.socket.on('play_response', function (data) {
-    let line = Game.paper.lines[data.id];
     console.log(data);
-    line.click(color(255, 0, 0));
+    Game.turn = data.turn;
+    let line = Game.paper.lines[data.id];
+    let fillColor = color(
+        data.color.r,
+        data.color.g,
+        data.color.b,
+        data.color.a
+    );
+    line.click(fillColor);
+});
+
+Socket.socket.on('play_again_response', function (data) {
+   Game.turn = data.turn;
 });

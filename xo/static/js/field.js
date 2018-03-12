@@ -88,45 +88,92 @@ class Field {
             for (let i = 0; i < len; i++) {
                 colors.push(lerpColor(from, to, (i + 1) / len));
             }
-            animation(this, 'color', 100, colorAnimationGenerator, this.color, color);
+            animation(this, 'color', colorAnimationGenerator, this.color, color, 100);
             this.filled = true;
         }
     }
 }
 
 // Time is in milliseconds
-function animation(that, attribute, time, arrayGenerator, from, to) {
-    let array = arrayGenerator(from, to, int(time / 20));
-    let timeout = time / array.length;
-    interpolate(that, attribute, array, timeout);
+function animation(that, attribute, arrayGenerator, list) {
+    let args = [...arguments];
+    args = args.splice(3);
+    let object = arrayGenerator(args);
+    console.log(object);
+    interpolate(that, attribute, object.array, object.timeouts);
 }
 
-function interpolate(that, attribute, array, timeout) {
+function interpolate(that, attribute, array, timeouts) {
     if (array.length === 0 || that[attribute] === undefined) {
         return;
     }
     that[attribute] = array[0];
     array.shift();
+    let timeout = timeouts[0];
+    timeouts.shift();
     setTimeout(function () {
-        interpolate(that, attribute, array, timeout);
+        interpolate(that, attribute, array, timeouts);
     }, timeout);
 }
 
-function colorAnimationGenerator(from, to, scope) {
+// for now only 3 arguments
+function colorAnimationGenerator(args) {
+    let from = args[0];
+    let to = args[1];
+    let time = args[2];
+    let scope = int(time * 0.05);
     let array = [];
+    let timeouts = [];
     for (let i = 0; i < scope; i++) {
         array.push(lerpColor(from, to, (i + 1) / scope));
+        timeouts.push(scope);
     }
-    return array;
+    debugger;
+    return {
+        array: array,
+        timeouts: timeouts
+    };
 }
 
-function lineAnimationGenerator(from, to, scope) {
+function linear(from, to, scope) {
     let array = [];
-    let a = [0.3, 1];
     let step = (to - from) / scope;
+    debugger;
+    if (from > to) {
+        let i = from + step;
+        for (; i >= to; i+=step) {
+            array.push(i);
+        }
+        return array;
+    }
     let i = from + step;
     for (; i < to + step; i+=step) {
         array.push(i);
     }
     return array;
+}
+
+function lineAnimationGenerator(array) {
+    let arrays = [], size = 3;
+    if (array.length % size !== 0) {
+        return [];
+    }
+    while (array.length > 0)
+        arrays.push(array.splice(0, size));
+
+    array = [];
+    let timeouts = [];
+    for (let i = 0; i < arrays.length; i++) {
+        let scope = int(arrays[i][2] * 0.05);
+        let newArray = linear(arrays[i][0], arrays[i][1], scope);
+        for (let j = 0; j < newArray.length; j++) {
+            timeouts.push(scope);
+        }
+        array.push(...newArray);
+    }
+    return {
+        array: array,
+        timeouts: timeouts
+    };
+
 }

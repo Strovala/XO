@@ -3,7 +3,7 @@ class Field {
         this.id = id;
         this.position = position;
         this.size = size || Defaults.size;
-        this.color = color(0, 0, 255);
+        this.color = color(Defaults.background);
         this.playable = false;
         this.filled = false;
         this.edges = {};
@@ -81,8 +81,52 @@ class Field {
                 clickedCnt++;
         });
         if (clickedCnt === 4) {
-            this.color = color;
+            let from = this.color;
+            let to = color;
+            let colors = [];
+            let len = 100;
+            for (let i = 0; i < len; i++) {
+                colors.push(lerpColor(from, to, (i + 1) / len));
+            }
+            animation(this, 'color', 100, colorAnimationGenerator, this.color, color);
             this.filled = true;
         }
     }
+}
+
+// Time is in milliseconds
+function animation(that, attribute, time, arrayGenerator, from, to) {
+    let array = arrayGenerator(from, to, int(time / 20));
+    let timeout = time / array.length;
+    interpolate(that, attribute, array, timeout);
+}
+
+function interpolate(that, attribute, array, timeout) {
+    if (array.length === 0 || that[attribute] === undefined) {
+        return;
+    }
+    that[attribute] = array[0];
+    array.shift();
+    setTimeout(function () {
+        interpolate(that, attribute, array, timeout);
+    }, timeout);
+}
+
+function colorAnimationGenerator(from, to, scope) {
+    let array = [];
+    for (let i = 0; i < scope; i++) {
+        array.push(lerpColor(from, to, (i + 1) / scope));
+    }
+    return array;
+}
+
+function lineAnimationGenerator(from, to, scope) {
+    let array = [];
+    let a = [0.3, 1];
+    let step = (to - from) / scope;
+    let i = from + step;
+    for (; i < to + step; i+=step) {
+        array.push(i);
+    }
+    return array;
 }

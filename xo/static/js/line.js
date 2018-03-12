@@ -64,13 +64,12 @@ class Line {
     click(fillColor) {
         this.clicked = true;
         this.color = fillColor;
-        this.weight = Defaults.weight;
+        animation(this, 'weight', 100, lineAnimationGenerator, this.weight, Defaults.weight);
         this.fields.forEach(function (field) {
             field.checkFilled(fillColor);
-            let isMyColor = false;
             // fillColor === Game.myColor will never be equal
             // because its comparing references
-            isMyColor = fillColor.toString() === Game.myColor.toString();
+            let isMyColor = fillColor.toString() === Game.myColor.toString();
             if (field.filled && isMyColor) {
                 Socket.socket.emit('play_again');
             }

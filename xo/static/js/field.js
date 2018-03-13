@@ -75,6 +75,9 @@ class Field {
     }
 
     checkFilled(color) {
+        //let scoreLeft = document.getElementById('scoreLeft');
+        let scoreLeft = $('#scoreLeft'); // Same as this above (jQuery)
+
         let clickedCnt = 0;
         this.edges.forEach(function (edge) {
             if (edge.clicked)
@@ -90,6 +93,8 @@ class Field {
             }
             animation(this, 'color', colorAnimationGenerator, this.color, color, 100);
             this.filled = true;
+            score++;
+            scoreLeft.text('Score: ' + score);
         }
     }
 }
@@ -177,3 +182,4 @@ function lineAnimationGenerator(array) {
     };
 
 }
+let score = 0;

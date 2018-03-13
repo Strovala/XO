@@ -26,6 +26,7 @@ function testInit() {
     Game.fields.push(f12);
     Game.fields.push(f13);
 }
+console.log($("#score"));
 
 function centerCanvas() {
     let x = (windowWidth - width) / 2;
@@ -33,13 +34,10 @@ function centerCanvas() {
     Game.canvas.position(x, y);
 }
 
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
 
 function setup() {
-    Defaults.width = windowWidth;
-    Defaults.heigth = windowHeight;
+    Defaults.width = int(windowWidth*0.8);
+    Defaults.heigth = int(windowHeight*0.8);
     Defaults.size = int(min(
         min(Defaults.width, Defaults.heigth) / Defaults.boardSize,
         Defaults.fixedSize
@@ -48,6 +46,8 @@ function setup() {
     if (!(fieldCntMin % 2)) {
         Defaults.size *= 0.9;
     }
+    Defaults.width += Defaults.size * 2;
+    Defaults.heigth += Defaults.size * 2;
     let fieldCntMax = int(max(Defaults.width, Defaults.heigth) / Defaults.size);
     if (!(fieldCntMax % 2)) {
         if (Defaults.width > Defaults.heigth) {
@@ -68,8 +68,9 @@ function setup() {
     Game.canvas = createCanvas(Defaults.width, Defaults.heigth);
     // centerCanvas();
     Defaults.paperLineColor = color(150, 150, 150);
-    background(Defaults.background);
     Game.paper = new Paper();
+    background(Defaults.background);
+    Game.canvas.parent('sketch');
 }
 
 function draw() {

@@ -2,10 +2,37 @@
 <html>
 <head>
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style> body {
-        padding: 0;
-        margin: 0;
-    } </style>
+    <style>
+
+        html, body {
+            height: 100%;
+        }
+
+        html {
+            display: table;
+            margin: auto;
+        }
+
+        body, #sketch {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #scoreLeft {
+            float: left;
+        }
+
+        #scoreRight {
+            float: right;
+        }
+
+        #score {
+            font-size: xx-large;
+        }
+
+    </style>
+
+
     <script src="{{ url_for('static', filename='vendor/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.dom.min.js') }}"></script>
@@ -19,6 +46,21 @@
     <script src="{{ url_for('static', filename='js/field.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
 </head>
+
 <body>
+
+<div id="score">
+    <div id="scoreLeft">
+        Score: 2
+    </div>
+
+    <div id="scoreRight">
+        Score: 2
+    </div>
+</div>
+
+<div id="sketch">
+
+</div>
 </body>
 </html>

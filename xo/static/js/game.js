@@ -7,7 +7,7 @@ Game.fields = {};
 Game.lines.forEach = function (callback) { //this.lines is new object inside Paper object
     for (let property in this) { //there this refers to this.lines and that refers to Paper
         if (this.hasOwnProperty(property) &&
-            typeof this[property] !== 'function' // We dont want to call callback on a functions
+            typeof this[property] !== 'function' // We don't want to call callback on a functions
         ) {
             callback(this[property]);
         }
@@ -16,7 +16,7 @@ Game.lines.forEach = function (callback) { //this.lines is new object inside Pap
 Game.fields.forEach = function (callback) { //this.lines is new object inside Paper object
     for (let property in this) { //there this refers to this.lines and that refers to Paper
         if (this.hasOwnProperty(property) &&
-            typeof this[property] !== 'function' // We dont want to call callback on a functions
+            typeof this[property] !== 'function' // We don't want to call callback on a functions
         ) {
             callback(this[property]);
         }

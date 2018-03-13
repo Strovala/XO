@@ -3,7 +3,7 @@ class Field {
         this.id = id;
         this.position = position;
         this.size = size || Defaults.size;
-        this.color = color(0, 0, 255);
+        this.color = color(Defaults.background);
         this.playable = false;
         this.filled = false;
         this.edges = {};
@@ -75,14 +75,40 @@ class Field {
     }
 
     checkFilled(color) {
+        //let scoreLeft = document.getElementById('scoreLeft');
+        let scoreLeft = $('#scoreLeft'); // Same as this above (jQuery)
+
         let clickedCnt = 0;
         this.edges.forEach(function (edge) {
             if (edge.clicked)
                 clickedCnt++;
         });
         if (clickedCnt === 4) {
-            this.color = color;
+            let from = this.color;
+            let to = color;
+            let colors = [];
+            let len = 100;
+            for (let i = 0; i < len; i++) {
+                colors.push(lerpColor(from, to, (i+1)/len));
+            }
+            colors.push(to);
+            let that = this;
+            function linear(that, colors) {
+                if (colors.length === 0) {
+                    return;
+                }
+                that.color = colors[0];
+                colors.shift();
+                setTimeout(function () {
+                    linear(that, colors);
+                }, 1);
+            }
+            linear(this, colors);
+            // this.color = color;
             this.filled = true;
+            score++;
+            scoreLeft.text('Score: ' + score);
         }
     }
 }
+let score = 0;

@@ -41,17 +41,15 @@ class Socket:
 
 @app.route('/')
 def home():
-    return render_template('index.html')
-
-
-@app.route('/start', methods=['POST'])
-def start():
-    body = request.form
-    return render_template('game.html', message=body.get('name'))
+    return render_template(
+        'index.html',
+        username_maxlength=12
+    )
 
 
 @socketio.on('connect')
 def handle_connect():
+    print("someone connected")
     color, opponent_color, turn = (
         (colors.get('horizontal'), colors.get('vertical'), True)
         if len(sockets) % 2 else

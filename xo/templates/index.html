@@ -2,43 +2,7 @@
 <html>
 <head>
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style>
-
-        html, body {
-            height: 100%;
-            margin: auto;
-        }
-
-        #sketch {
-            display: table;
-            margin: auto;
-        }
-
-        body {
-            display: table;
-            box-sizing: border-box;
-            width: 100%;
-            background: url("{{ url_for('static', filename='desk.jpg') }}") no-repeat;
-            background-size: 100% 100%;
-        }
-
-        #scoreLeft {
-            float: left;
-        }
-
-        #scoreRight {
-            float: right;
-        }
-
-        #score {
-            width: 80%;
-            margin: auto;
-            font-size: xx-large;
-        }
-
-    </style>
-
-
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}">
     <script src="{{ url_for('static', filename='vendor/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/addons/p5.dom.min.js') }}"></script>
@@ -54,7 +18,7 @@
 </head>
 
 <body>
-<div class="container">
+<div class="game">
 
     <div id="score">
         <div id="scoreLeft">
@@ -70,5 +34,18 @@
 
     </div>
 </div>
+<div class="login">
+    <input type="text" id="username_input" maxlength="{{ username_maxlength }}">
+</div>
+<script>
+    $("#username_input").keydown(function (event) {
+        if (event.which === 12 || event.keyCode === 13) {
+            console.log("Enter");
+            $(".login").css("display", "none");
+            Socket.connect();
+            $(".game").css("display", "block");
+        }
+    });
+</script>
 </body>
 </html>

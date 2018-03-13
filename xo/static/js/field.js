@@ -104,7 +104,6 @@ function animation(that, attribute, arrayGenerator, list) {
     let args = [...arguments];
     args = args.splice(3);
     let object = arrayGenerator(args);
-    console.log(object);
     interpolate(that, attribute, object.array, object.timeouts);
 }
 
@@ -133,7 +132,6 @@ function colorAnimationGenerator(args) {
         array.push(lerpColor(from, to, (i + 1) / scope));
         timeouts.push(scope);
     }
-    debugger;
     return {
         array: array,
         timeouts: timeouts
@@ -143,7 +141,6 @@ function colorAnimationGenerator(args) {
 function linear(from, to, scope) {
     let array = [];
     let step = (to - from) / scope;
-    debugger;
     if (from > to) {
         let i = from + step;
         for (; i >= to; i+=step) {

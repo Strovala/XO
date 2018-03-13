@@ -6,16 +6,20 @@
 
         html, body {
             height: 100%;
+            margin: auto;
         }
 
-        html {
+        #sketch {
             display: table;
             margin: auto;
         }
 
-        body, #sketch {
-            display: table-cell;
-            vertical-align: middle;
+        body {
+            display: table;
+            box-sizing: border-box;
+            width: 100%;
+            background: url("{{ url_for('static', filename='desk.jpg') }}") no-repeat;
+            background-size: 100% 100%;
         }
 
         #scoreLeft {
@@ -27,6 +31,8 @@
         }
 
         #score {
+            display: table;
+            margin: auto;
             font-size: xx-large;
         }
 
@@ -48,19 +54,21 @@
 </head>
 
 <body>
+<div class="container">
 
-<div id="score">
-    <div id="scoreLeft">
-        Score: 2
+    <div id="score">
+        <div id="scoreLeft">
+            Score: 2
+        </div>
+
+        <div id="scoreRight">
+            Score: 2
+        </div>
     </div>
 
-    <div id="scoreRight">
-        Score: 2
+    <div id="sketch">
+
     </div>
-</div>
-
-<div id="sketch">
-
 </div>
 </body>
 </html>

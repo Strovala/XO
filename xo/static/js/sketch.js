@@ -26,7 +26,6 @@ function testInit() {
     Game.fields.push(f12);
     Game.fields.push(f13);
 }
-console.log($("#score"));
 
 function centerCanvas() {
     let x = (windowWidth - width) / 2;
@@ -59,7 +58,7 @@ function setup() {
     }
     Defaults.clickOffset = Defaults.size * 0.2;
     Defaults.lineOffset = Defaults.size * 0.2;
-    Defaults.paperWeight = int(Defaults.size / 14);
+    Defaults.paperWeight = max(int(Defaults.size / 14), 2);
     Defaults.weight = Defaults.paperWeight * 2;
     Defaults.middleLineWeight = int(Defaults.weight * 0.2);
     if (Defaults.middleLineWeight === 0) {
@@ -101,7 +100,6 @@ function mousePressed() {
 }
 
 Socket.socket.on('play_response', function (data) {
-    console.log(data);
     Game.turn = data.turn;
     let line = Game.paper.lines[data.id];
     let fillColor = color(

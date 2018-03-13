@@ -26,6 +26,5 @@ Socket.socket.on('connect', function () {
             Game.generateFields();
             Game.setBoard();
         }
-        console.log(data);
     })
 });

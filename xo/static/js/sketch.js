@@ -65,11 +65,12 @@ function setup() {
         Defaults.middleLineWeight = 1;
     }
     Game.canvas = createCanvas(Defaults.width, Defaults.heigth);
-    // centerCanvas();
+    Socket.connect();
     Defaults.paperLineColor = color(150, 150, 150);
     Game.paper = new Paper();
     background(Defaults.background);
     Game.canvas.parent('sketch');
+    Game.canvas.style('display', 'block');
 }
 
 function draw() {
@@ -98,19 +99,3 @@ function mousePressed() {
         }
     })
 }
-
-Socket.socket.on('play_response', function (data) {
-    Game.turn = data.turn;
-    let line = Game.paper.lines[data.id];
-    let fillColor = color(
-        data.color.r,
-        data.color.g,
-        data.color.b,
-        data.color.a
-    );
-    line.click(fillColor);
-});
-
-Socket.socket.on('play_again_response', function (data) {
-   Game.turn = data.turn;
-});

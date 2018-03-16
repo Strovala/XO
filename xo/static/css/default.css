@@ -5,7 +5,8 @@ html, body {
 
 #sketch {
     display: table;
-    margin: auto;
+    margin: 15vh auto auto;
+    /*margin: auto;*/
 }
 
 body {
@@ -37,7 +38,6 @@ body {
 
 .login {
     width: 100%;
-    height: 100%;
 }
 
 #username_input {

@@ -1,6 +1,6 @@
 function setup() {
-    Defaults.width = int(windowWidth*0.8);
-    Defaults.heigth = int(windowHeight*0.8);
+    Defaults.width = int(windowWidth*0.6);
+    Defaults.heigth = int(windowHeight*0.6);
     Defaults.size = int(min(
         min(Defaults.width, Defaults.heigth) / Defaults.boardSize,
         Defaults.fixedSize

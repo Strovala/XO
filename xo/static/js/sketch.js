@@ -23,7 +23,7 @@ function setup() {
     Defaults.clickOffset = Defaults.size * 0.2;
     Defaults.lineOffset = Defaults.size * 0.2;
     Defaults.paperWeight = max(int(Defaults.size / 14), 2);
-    Defaults.weight = Defaults.paperWeight * 2;
+    Defaults.weight = Defaults.paperWeight * 3;
     Defaults.middleLineWeight = max(int(Defaults.weight * 0.2), 2);
     if (Defaults.middleLineWeight === 0) {
         Defaults.middleLineWeight = 1;
@@ -46,6 +46,8 @@ function draw() {
         Game.fields.forEach(function (field) {
             field.show();
         });
+
+        drawScore();
     }
 }
 
@@ -57,22 +59,12 @@ function mousePressed() {
                 let dir;
                 let field1 = line.fields[0];
                 let field2 = line.fields[1];
-                if (field1.id > field2.id) {
-                    if (field1.id - field2.id === 1) {
-                        dir = "n";
-                    }
-                    else {
-                        dir = "w";
-                    }
-                }
-                else {
-                    if (field2.id - field1.id === 1) {
-                        dir = "s";
-                    }
-                    else {
-                        dir = "e";
-                    }
-                }
+                if (field1.id > field2.id)
+                    if (field1.id - field2.id === 1) dir = "n";
+                    else dir = "w";
+                else
+                    if (field2.id - field1.id === 1) dir = "s";
+                    else dir = "e";
 
                 Socket.socket.emit('play', {
                     id: field1.id + " " + dir

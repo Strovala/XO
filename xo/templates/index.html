@@ -15,18 +15,24 @@
     <script src="{{ url_for('static', filename='js/line.js') }}"></script>
     <script src="{{ url_for('static', filename='js/field.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
+
 </head>
 
 <body>
+
+<div id="scoreLeft">FJMIODSJOGJLSDMFIPJEWIGOLJMR</div>
+
 <div class="game">
 
     <div id="sketch">
 
     </div>
 </div>
+
 <div class="login">
     <input type="text" id="username_input" maxlength="{{ username_maxlength }}">
 </div>
+
 <script>
     $("#username_input").keydown(function (event) {
         if (event.which === 12 || event.keyCode === 13) {
@@ -37,5 +43,6 @@
         }
     });
 </script>
+
 </body>
 </html>

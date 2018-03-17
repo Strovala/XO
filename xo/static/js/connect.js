@@ -16,6 +16,11 @@ Socket.connect = function () {
                     data.vertical.b,
                     data.vertical.a
                 );
+
+                Game.player1 = new Player(Defaults.player1name, Game.horizontal);
+                Game.player2 = new Player(Defaults.player2name, Game.vertical);
+                Game.players = [Game.player1, Game.player2];
+
                 Game.myColor = color(
                     data.color.r,
                     data.color.g,
@@ -49,3 +54,4 @@ Socket.connect = function () {
         Game.turn = data.turn;
     });
 };
+

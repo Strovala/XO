@@ -10,13 +10,14 @@ class Field {
         this.edges.forEach = function (callback) { //this.lines is new object inside Paper object
             for (let property in this) { //there this refers to this.lines and that refers to Paper
                 if (this.hasOwnProperty(property) &&
-                    typeof this[property] !== 'function' // We dont want to call callback on a functions
+                    typeof this[property] !== 'function' // We don't want to call callback on a functions
                 ) {
                     callback(this[property]);
                 }
             }
         };
         this.initialize();
+        this.fieldsList = [];
     }
 
     initialize() {
@@ -55,22 +56,22 @@ class Field {
     }
 
     show() {
-        if (this.playable) {
-            this.edges.forEach(function (edge) {
-                if (edge.clicked)
-                    edge.show();
-            });
-        }
         if (this.filled) {
             let startLine = this.edges.w;
             noStroke();
             fill(this.color);
             rect(
-                startLine.start.x + startLine.weight/2,
-                startLine.start.y + startLine.weight/2,
-                this.size - startLine.weight,
-                this.size - startLine.weight
+                startLine.start.x,
+                startLine.start.y,
+                this.size,
+                this.size
             );
+        }
+        if (this.playable) {
+            this.edges.forEach(function (edge) {
+                if (edge.clicked)
+                    edge.show();
+            });
         }
     }
 
@@ -97,6 +98,8 @@ class Field {
             scoreLeft.text('Score: ' + score);
         }
     }
+
+
 }
 
 // Time is in milliseconds
@@ -180,3 +183,19 @@ function lineAnimationGenerator(array) {
 
 }
 let score = 0;
+
+function makeFieldsList() {
+    let idCnt = 0;
+    Field.fieldsList = [];
+    Game.fields.forEach(function (field) {
+        if (field.playable) {
+            field.id = idCnt++;
+            Field.fieldsList.push(field);
+        }
+    });
+
+    // for (let i = 0; i < Field.fieldsList.length; i++) {
+    //     console.log(Field.fieldsList[i].id);
+    //
+    // }
+}

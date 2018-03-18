@@ -63,17 +63,20 @@ class Line {
 
     click(fillColor) {
         this.clicked = true;
-        this.color = fillColor;
-        animation(this, 'weight', lineAnimationGenerator, this.weight, Defaults.weight*2, 100, Defaults.weight*2, Defaults.weight, 100);
-        this.fields.forEach(function (field) {
-            field.checkFilled(fillColor);
-            // fillColor === Game.myColor will never be equal
-            // because its comparing references
-            let isMyColor = fillColor.toString() === Game.myColor.toString();
-            if (field.filled && isMyColor) {
-                Socket.socket.emit('play_again');
-            }
-        });
+        this.weight = this.weight * 2;
+        if (Game.connected) {
+            this.color = fillColor;
+            animation(this, 'weight', lineAnimationGenerator, this.weight, Defaults.weight*2, 100, Defaults.weight*2, Defaults.weight, 100);
+            this.fields.forEach(function (field) {
+                field.checkFilled(fillColor);
+                // fillColor === Game.myColor will never be equal
+                // because its comparing references
+                let isMyColor = fillColor.toString() === Game.myColor.toString();
+                if (field.filled && isMyColor) {
+                    Socket.socket.emit('play_again');
+                }
+            });
+        }
     }
 
 }

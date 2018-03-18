@@ -37,15 +37,16 @@
 <div class="login">
     <input type="text" id="username_input" maxlength="{{ username_maxlength }}">
 </div>
+</body>
 <script>
     $("#username_input").keydown(function (event) {
         if (event.which === 12 || event.keyCode === 13) {
             console.log("Enter");
             $(".login").css("display", "none");
             Socket.connect();
+            initialize();
             $(".game").css("display", "block");
         }
     });
 </script>
-</body>
 </html>

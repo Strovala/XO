@@ -115,3 +115,32 @@ Game.setBoard = function () {
         }
     }
 };
+
+Game.fillStarters = function () {
+    let indexX = (Game.paper.fieldsCntX-1) / 2;
+    let indexY = (Game.paper.fieldsCntY-1) / 2;
+    let boardHalfCnt = (Defaults.boardSize-1) / 2;
+    let centerField = Game.fields.get(indexX, indexY);
+    centerField.setPlayable();
+    for (let i = 1; i < boardHalfCnt+1; i++) {
+        let fields = [
+            Game.fields.get(indexX + i, indexY),
+            Game.fields.get(indexX - i, indexY),
+            Game.fields.get(indexX, indexY + i),
+            Game.fields.get(indexX, indexY - i)
+        ];
+        if (i === boardHalfCnt) {
+            let fillColor = Game.horizontal;
+            let j = 0;
+            fields.forEach(function (field) {
+                if (j >= 2) {
+                    fillColor = Game.vertical;
+                }
+                field.edges.forEach(function (edge) {
+                    edge.click(fillColor);
+                });
+                j++;
+            });
+        }
+    }
+}

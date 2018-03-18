@@ -59,7 +59,8 @@ def handle_connect():
 
 
 @socketio.on('init')
-def init():
+def init(data):
+    print(data)
     response = {
         'message': 'You are connected with id={}'.format(request.sid),
         'horizontal': colors.get('horizontal'),
@@ -67,12 +68,11 @@ def init():
         'turn': sockets[request.sid].turn,
         'color': sockets[request.sid].color
     }
-    return response
+    sockets[request.sid].emit('init_response', response)
 
 
 @socketio.on('play')
 def play(data):
-    print('received json: ' + str(data))
     color = sockets[request.sid].color
     for id, socket in sockets.items():
         socket.switch_turn()

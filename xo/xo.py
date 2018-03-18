@@ -69,9 +69,9 @@ def init(data):
     username, opponents_username = None, None
     for sid in sockets:
         if sid == request.sid:
-            username = sockets[request.sid].username
+            username = sockets[sid].username
         else:
-            opponents_username = sockets[request.sid].username
+            opponents_username = sockets[sid].username
     response = {
         'message': 'You are connected with id={}'.format(request.sid),
         'horizontal': colors.get('horizontal'),

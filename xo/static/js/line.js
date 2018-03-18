@@ -16,8 +16,6 @@ class Line {
         if (this.playable && this.clicked) {
             stroke(0, 0, 0);
         }
-        if (this.weight > 3)
-            debugger;
         strokeWeight(this.weight);
 
         line(this.start.x, this.start.y, this.end.x, this.end.y);

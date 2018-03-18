@@ -82,5 +82,15 @@ class Line {
             }
         }
     }
+}
 
+function makeLinesList() {
+    let idCnt = 0;
+    Line.linesList = [];
+    Game.paper.lines.forEach(function (line) {
+        if (line.id === undefined && line.playable) {
+            line.id = idCnt++;
+            Line.linesList.push(line);
+        }
+    });
 }

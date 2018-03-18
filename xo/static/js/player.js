@@ -21,10 +21,10 @@ function drawScore() {
     let statusPlayer1 = "";
     let statusPlayer2 = "";
 
-    if (Game.player1.score > Field.fieldsList.length / 2) {
-        statusPlayer1 = "W";
-        statusPlayer2 = "L";
-    }
+    // if (Game.player1.score > Field.fieldsList.length / 2) {
+        statusPlayer1 = Game.player1.name;
+        statusPlayer2 = Game.player2.name;
+    // }
     if (Game.player2.score > Field.fieldsList.length / 2) {
         statusPlayer1 = "L";
         statusPlayer2 = "W";
@@ -37,9 +37,9 @@ function drawScore() {
         scorePlayer2 = "* " + Game.player2.score;
     }
 
-    Defaults.scoreSize = Defaults.heigth * 0.2; // TODO
+    Defaults.textSize = min(Defaults.heigth * 0.2, Defaults.width * 0.13); // TODO
     textFont(Defaults.font);
-    textSize(Defaults.scoreSize);
+    textSize(Defaults.textSize);
     fill(Game.player1.color);
     text(scorePlayer1, height * 0.05, height * 0.17);
     text(statusPlayer1, height * 0.05   , height * 0.95);

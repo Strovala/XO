@@ -45,8 +45,8 @@ Socket.connect = function () {
                 data.vertical.a
             );
 
-            Game.player1 = new Player(Defaults.player1name, Game.horizontal);
-            Game.player2 = new Player(Defaults.player2name, Game.vertical);
+            Game.player1 = new Player(data.horizontal_username, Game.horizontal);
+            Game.player2 = new Player(data.vertical_username, Game.vertical);
             Game.players = [Game.player1, Game.player2];
 
             Game.me = Game.player2;

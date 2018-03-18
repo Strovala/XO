@@ -3,7 +3,8 @@ Socket.connect = function () {
     Socket.socket = io.connect('http://' + document.domain + ':' + location.port);
 
     Socket.socket.on('play_response', function (data) {
-        Game.turn = data.turn;
+        Game.me.turn = data.turn;
+        Game.opponent.turn = !data.turn;
         let fieldId = int(data.id.split(" ")[0]);
         let dir = data.id.split(" ")[1];
         let line = Field.fieldsList[fieldId].edges[dir];
@@ -18,6 +19,7 @@ Socket.connect = function () {
 
     Socket.socket.on('play_again_response', function (data) {
         Game.turn = data.turn;
+        Game.opponent.turn = !data.turn;
     });
 
 
@@ -40,13 +42,22 @@ Socket.connect = function () {
             Game.player2 = new Player(Defaults.player2name, Game.vertical);
             Game.players = [Game.player1, Game.player2];
 
+            Game.me = Game.player2;
+            Game.opponent = Game.player1;
+            Game.opponent.switchTurn();
+            if (data.turn) {
+                Game.me = Game.player1;
+                Game.me.turn = data.turn;
+                Game.opponent = Game.player2;
+                Game.opponent.turn = !data.turn;
+            }
+
             Game.myColor = color(
                 data.color.r,
                 data.color.g,
                 data.color.b,
                 data.color.a
             );
-            Game.turn = data.turn;
             Game.connected = true;
             Game.fillStarters();
         }

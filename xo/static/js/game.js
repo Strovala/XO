@@ -135,4 +135,4 @@ Game.fillStarters = function () {
             });
         }
     }
-}
+};

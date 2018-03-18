@@ -1,3 +1,7 @@
+function preload() {
+    Defaults.font = loadFont('../static/font/Pecita.otf')
+}
+
 function setup() {
 
 }
@@ -66,7 +70,7 @@ function mousePressed() {
         let stop = false;
         Game.paper.lines.forEach(function (line) {
             if (!stop) {
-                if (Game.turn && !line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
+                if (Game.me.turn && !line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
                     let dir;
                     let field1 = line.fields[0];
                     let field2 = line.fields[1];

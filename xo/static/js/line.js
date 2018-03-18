@@ -66,7 +66,6 @@ class Line {
         this.weight = Defaults.weight;
         if (Game.connected) {
             this.color = fillColor;
-            console.log(this.weight);
             animation(this, 'weight', lineAnimationGenerator, this.weight, Defaults.weight*2, 100, Defaults.weight*2, Defaults.weight, 100);
             let playAgain = false;
             this.fields.forEach(function (field) {

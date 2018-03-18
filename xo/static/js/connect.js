@@ -3,8 +3,6 @@ Socket.connect = function () {
     Socket.socket = io.connect('http://' + document.domain + ':' + location.port);
 
     Socket.socket.on('play_response', function (data) {
-        Game.me.turn = data.turn;
-        Game.opponent.turn = !data.turn;
         let fieldId = int(data.id.split(" ")[0]);
         let dir = data.id.split(" ")[1];
         let line = Field.fieldsList[fieldId].edges[dir];
@@ -18,7 +16,7 @@ Socket.connect = function () {
     });
 
     Socket.socket.on('play_again_response', function (data) {
-        Game.turn = data.turn;
+        Game.me.turn = data.turn;
         Game.opponent.turn = !data.turn;
     });
 

@@ -27,8 +27,8 @@ function initialize() {
         Defaults.clickOffset = Defaults.size * 0.2;
         Defaults.lineOffset = Defaults.size * 0.2;
         Defaults.paperWeight = max(int(Defaults.size / 14), 2);
-        Defaults.weight = Defaults.paperWeight * 2;
-        Defaults.middleLineWeight = int(Defaults.weight * 0.2);
+        Defaults.weight = Defaults.paperWeight * 3;
+        Defaults.middleLineWeight = max(int(Defaults.weight * 0.2), 2);
         if (Defaults.middleLineWeight === 0) {
             Defaults.middleLineWeight = 1;
         }
@@ -44,7 +44,6 @@ function initialize() {
         Game.setBoard();
         Socket.socket.emit('init', {
             size: Game.size
-
         });
 }
 
@@ -57,6 +56,8 @@ function draw() {
         Game.fields.forEach(function (field) {
             field.show();
         });
+
+        drawScore();
     }
 }
 
@@ -66,8 +67,18 @@ function mousePressed() {
         Game.paper.lines.forEach(function (line) {
             if (!stop) {
                 if (Game.turn && !line.clicked && line.playable && line.intersects(mouseX, mouseY)) {
+                    let dir;
+                    let field1 = line.fields[0];
+                    let field2 = line.fields[1];
+                    if (field1.id > field2.id)
+                        if (field1.id - field2.id === 1) dir = "n";
+                        else dir = "w";
+                    else
+                        if (field2.id - field1.id === 1) dir = "s";
+                        else dir = "e";
+
                     Socket.socket.emit('play', {
-                      id: line.getHashKey()[0]
+                        id: field1.id + " " + dir
                     });
                     // line.click(color(255, 255, 0));
                     stop = true;

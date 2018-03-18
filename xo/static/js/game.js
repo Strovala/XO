@@ -114,6 +114,11 @@ Game.setBoard = function () {
             }
         }
     }
+
+    // set ID to playable fields
+    makeFieldsList();
+
+
 };
 
 Game.fillStarters = function () {

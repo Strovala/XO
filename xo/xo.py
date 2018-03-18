@@ -66,20 +66,22 @@ def start(data):
 
 @socketio.on('init')
 def init(data):
-    username, opponents_username = None, None
+    horizontal_username, vertical_username = None, None
+    horizontal = colors.get('horizontal')
+    vertical = colors.get('vertical')
     for sid in sockets:
-        if sid == request.sid:
-            username = sockets[sid].username
-        else:
-            opponents_username = sockets[sid].username
+        if sockets[sid].color == horizontal:
+            horizontal_username = sockets[sid].username
+        if sockets[sid].color == vertical:
+            vertical_username = sockets[sid].username
     response = {
         'message': 'You are connected with id={}'.format(request.sid),
         'horizontal': colors.get('horizontal'),
         'vertical': colors.get('vertical'),
         'turn': sockets[request.sid].turn,
         'color': sockets[request.sid].color,
-        'username': username,
-        'opponents_username': opponents_username
+        'horizontal_username': horizontal_username,
+        'vertical_username': vertical_username
     }
     sockets[request.sid].emit('init_response', response)
 

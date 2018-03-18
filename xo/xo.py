@@ -55,7 +55,7 @@ def handle_connect():
 
 @socketio.on('start')
 def start(data):
-    username = data.username
+    username = data.get('username', 'Awkward')
     color, opponent_color, turn = (
         (colors.get('horizontal'), colors.get('vertical'), True)
         if len(sockets) % 2 else
@@ -69,9 +69,9 @@ def init(data):
     username, opponents_username = None, None
     for sid in sockets:
         if sid == request.sid:
-            username = sockets[request.sid]
+            username = sockets[request.sid].username
         else:
-            opponents_username = sockets[request.sid]
+            opponents_username = sockets[request.sid].username
     response = {
         'message': 'You are connected with id={}'.format(request.sid),
         'horizontal': colors.get('horizontal'),

@@ -4,7 +4,7 @@ Socket.connect = function () {
 
     Socket.socket.on('connect', function () {
         Socket.socket.emit('start', {
-            username: "Milos"
+            username: $("#username_input").val()
         });
     });
 
@@ -31,6 +31,7 @@ Socket.connect = function () {
 
     Socket.socket.on('init_response', function (data) {
         if (data) {
+            console.log(data);
             Game.horizontal = color(
                 data.horizontal.r,
                 data.horizontal.g,

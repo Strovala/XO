@@ -23,13 +23,14 @@ colors = {
 
 
 # Object that represents a socket connection
-class Socket:
-    def __init__(self, sid, color, opponent_color, turn):
+class Socket(object):
+    def __init__(self, sid, username, color, opponent_color, turn):
         self.sid = sid
         self.connected = True
         self.color = color
         self.opponent_color = opponent_color
         self.turn = turn
+        self.username = username
 
     # Emits data to a socket's unique room
     def emit(self, event, data):
@@ -49,24 +50,36 @@ def home():
 
 @socketio.on('connect')
 def handle_connect():
-    print("someone connected")
+    print('someone connected')
+
+
+@socketio.on('start')
+def start(data):
+    username = data.username
     color, opponent_color, turn = (
         (colors.get('horizontal'), colors.get('vertical'), True)
         if len(sockets) % 2 else
         (colors.get('vertical'), colors.get('horizontal'), False)
     )
-    sockets[request.sid] = Socket(request.sid, color, opponent_color, turn)
+    sockets[request.sid] = Socket(request.sid, username, color, opponent_color, turn)
 
 
 @socketio.on('init')
 def init(data):
-    print(data)
+    username, opponents_username = None, None
+    for sid in sockets:
+        if sid == request.sid:
+            username = sockets[request.sid]
+        else:
+            opponents_username = sockets[request.sid]
     response = {
         'message': 'You are connected with id={}'.format(request.sid),
         'horizontal': colors.get('horizontal'),
         'vertical': colors.get('vertical'),
         'turn': sockets[request.sid].turn,
-        'color': sockets[request.sid].color
+        'color': sockets[request.sid].color,
+        'username': username,
+        'opponents_username': opponents_username
     }
     sockets[request.sid].emit('init_response', response)
 

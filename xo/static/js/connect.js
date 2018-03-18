@@ -2,6 +2,12 @@ class Socket { }
 Socket.connect = function () {
     Socket.socket = io.connect('http://' + document.domain + ':' + location.port);
 
+    Socket.socket.on('connect', function () {
+        Socket.socket.emit('start', {
+            username: "Milos"
+        });
+    });
+
     Socket.socket.on('play_response', function (data) {
         Game.me.turn = data.turn;
         Game.opponent.turn = !data.turn;

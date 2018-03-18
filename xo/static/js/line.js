@@ -16,6 +16,8 @@ class Line {
         if (this.playable && this.clicked) {
             stroke(0, 0, 0);
         }
+        if (this.weight > 3)
+            debugger;
         strokeWeight(this.weight);
 
         line(this.start.x, this.start.y, this.end.x, this.end.y);
@@ -63,9 +65,10 @@ class Line {
 
     click(fillColor) {
         this.clicked = true;
-        this.weight = this.weight * 2;
+        this.weight = Defaults.weight;
         if (Game.connected) {
             this.color = fillColor;
+            console.log(this.weight);
             animation(this, 'weight', lineAnimationGenerator, this.weight, Defaults.weight*2, 100, Defaults.weight*2, Defaults.weight, 100);
             let playAgain = false;
             this.fields.forEach(function (field) {

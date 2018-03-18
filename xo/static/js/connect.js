@@ -4,7 +4,9 @@ Socket.connect = function () {
 
     Socket.socket.on('play_response', function (data) {
         Game.turn = data.turn;
-        let line = Game.paper.lines[data.id];
+        let fieldId = int(data.id.split(" ")[0]);
+        let dir = data.id.split(" ")[1];
+        let line = Field.fieldsList[fieldId].edges[dir];
         let fillColor = color(
             data.color.r,
             data.color.g,

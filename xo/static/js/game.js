@@ -53,20 +53,6 @@ Game.setBoard = function () {
         fields.forEach(function (field) {
             field.setPlayable();
         });
-        if (i === boardHalfCnt) {
-            let fillColor = Game.horizontal;
-            let j = 0;
-            fields.forEach(function (field) {
-                if (j >= 2) {
-                    fillColor = Game.vertical;
-                }
-                field.edges.forEach(function (edge) {
-                    edge.border = true;
-                    edge.click(fillColor);
-                });
-                j++;
-            });
-        }
     }
     // setting north fields
     for (let i = 1; i < boardHalfCnt; i++) {
@@ -142,6 +128,7 @@ Game.fillStarters = function () {
                     fillColor = Game.vertical;
                 }
                 field.edges.forEach(function (edge) {
+                    edge.border = true;
                     edge.click(fillColor);
                 });
                 j++;

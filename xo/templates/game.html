@@ -2,61 +2,47 @@
 <html>
 <head>
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <link rel="stylesheet" type="text/css" href="../static/css/default.css">
 
-    <style>
-
-        html, body {
-            height: 100%;
-        }
-
-        html {
-            display: table;
-            margin: auto;
-        }
-
-        body {
-            display: table-cell;
-            vertical-align: middle;
-        }
-
-        #scoreLeft {
-            float: left;
-        }
-
-        #scoreRight {
-            float: right;
-        }
-
-        #score {
-            font-size: xx-large;
-        }
-
-    </style>
-
-    <script src="../static/vendor/jquery-3.3.1.min.js"></script>
-    <script src="../static/vendor/p5.min.js"></script>
-    <script src="../static/vendor/addons/p5.dom.min.js"></script>
-    <script src="../static/vendor/addons/p5.sound.min.js"></script>
-    <script src="../static/vendor/socket.io-2.0.4.js"></script>
-    <script src="../static/js/defaults.js"></script>
-    <script src="../static/js/game.js"></script>
-    <script src="../static/js/connect.js"></script>
-    <script src="../static/js/paper.js"></script>
-    <script src="../static/js/line.js"></script>
-    <script src="../static/js/field.js"></script>
-    <script src="../static/js/sketch.js"></script>
 </head>
 
-<body>
+<!--<body>-->
 
-<div id="score">
-    <div id="scoreLeft">
-        Score: 2
+<!--<div class="welcome">-->
+    <!--<div class="heading">WELCOME</div>-->
+    <!--<button class="button">Invite</button>-->
+    <!--<br>-->
+    <!--<button class="button">Create Room</button>-->
+    <!--<br>-->
+    <!--<button class="button">Find Match</button>-->
+    <!--<br>-->
+    <!--<div id="history"></div>-->
+    <!--<div class="loader"></div>-->
+<!--</div>-->
+
+<div class="home">
+
+    <div class="info">
+        <span>You:</span>
+        <span>Dejan</span>
+        <span>blue</span>
     </div>
 
-    <div id="scoreRight">
-        Score: 2
+    <div class="info">
+        <span>Opponent:</span>
+        <span>Strovala</span>
+        <span>orange</span>
     </div>
+
+    <div class="pencil" id="bluePencil">
+        <img class="pencilImage" src="../static/img/pencils_wob/blue.png" alt="blue.png">
+    </div>
+
+    <div class="pencil" id="orangePencil">
+        <img class="pencilImage" src="../static/img/pencils_wob/orange.png" alt="orange.png">
+    </div>
+
 </div>
+
 </body>
 </html>

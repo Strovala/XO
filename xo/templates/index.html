@@ -20,14 +20,23 @@
 
 <body>
 <div class="game">
-
+    <div class="pencil"><img src="../static/img/pencil.png" alt="pencil.png">Dejan</div>
     <div id="sketch">
 
     </div>
+    <!--<div class="pencil"><img src="../static/img/pencil.png" alt="pencil.png"></div>-->
 </div>
+
 <div class="login">
     <input type="text" id="username_input" maxlength="{{ username_maxlength }}">
 </div>
+
+
+
+
+
+
+
 <script>
     $("#username_input").keydown(function (event) {
         if (event.which === 12 || event.keyCode === 13) {
@@ -39,5 +48,6 @@
         }
     });
 </script>
+
 </body>
 </html>

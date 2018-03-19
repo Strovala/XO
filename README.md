@@ -1,2 +1,2 @@
 # XO
-Paper game in school multiplayer online
+Paper game in school multiplayer online.
